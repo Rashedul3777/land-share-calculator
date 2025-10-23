@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>জমি ভাগ ক্যালকুলেটর</title>
+<style>
+  body {
+    font-family: kalpurush, sans-serif;
+    text-align: center;
+    background: #f4f4f4;
+    padding: 40px;
+  }
+  .container {
+    background: white;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  input {
+    width: 90%;
+    padding: 8px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  button:hover {
+    background: #0056b3;
+  }
+  .result {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>জমি ভাগ ক্যালকুলেটর</h2>
+  <label>মোট জমি (শতক বা কাঠা):</label><br>
+  <input type="number" id="total" placeholder="যেমনঃ 50000"><br>
+  <label>অংশ (Share):</label><br>
+  <input type="number" id="share" placeholder="যেমনঃ 250"><br>
+  <button onclick="calculateLand()">হিসাব করো</button>
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+function calculateLand() {
+  let total = parseFloat(document.getElementById('total').value);
+  let share = parseFloat(document.getElementById('share').value);
+
+  if (isNaN(total) || isNaN(share)) {
+    document.getElementById('result').innerText = 'দয়া করে সঠিক সংখ্যা লিখুন!';
+    return;
+  }
+
+  let result = (total / 1000) * share;
+  document.getElementById('result').innerText = 'আপনার জমির পরিমাণ: ' + result.toFixed(2);
+}
+</script>
+</body>
+</html>
