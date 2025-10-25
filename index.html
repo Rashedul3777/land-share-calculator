@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>জমি ভাগ ক্যালকুলেটর</title>
+<style>
+  body{margin:0;font-family:'Noto Sans Bengali',Kalpurush,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;background:#e0e0e0;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+  .card{background:#fff;padding:30px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,0.12);width:100%;max-width:500px}
+  h2{margin-bottom:15px;text-align:center}
+  .row{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+  .label{flex:1;text-align:left;padding-right:12px}
+  .input{flex:1}
+  input[type=number]{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #ccc;font-size:16px}
+  button{background:#007bff;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:16px;margin-right:10px}
+  button.secondary{background:#28a745}
+  .result{margin-top:15px;font-weight:700;font-size:16px}
+  .extra-input{margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Expreiment By Rashedul Alam</h1>
+  <h2>জমি ভাগ ক্যালকুলেটর</h2>
+
+  <!-- অতিরিক্ত ইনপুট (উপরে নিচে, মোট 5 টা) -->
+  <div class="extra-input"><input id="extra1" type="number" placeholder="অতিরিক্ত ইনপুট ১ (শতক)" /></div>
+  <div class="extra-input"><input id="extra2" type="number" placeholder="অতিরিক্ত ইনপুট ২ (শতক)" /></div>
+  <div class="extra-input"><input id="extra3" type="number" placeholder="অতিরিক্ত ইনপুট ৩ (শতক)" /></div>
+  <div class="extra-input"><input id="extra4" type="number" placeholder="অতিরিক্ত ইনপুট ৪ (শতক)" /></div>
+  <div class="extra-input"><input id="extra5" type="number" placeholder="অতিরিক্ত ইনপুট ৫ (শতক)" /></div>
+
+  <hr style="margin:15px 0">
+
+  <div class="row">
+    <div class="label">দাগের মোট জমি</div>
+    <div class="input"><input id="acreInput" type="number" placeholder="একর" /></div>
+    <div class="input"><input id="shotokInput" type="number" placeholder="শতক" /></div>
+  </div>
+
+  <div class="row">
+    <div class="label">অংশানুয়ায়ী জমির পরিমান</div>
+    <div class="input"><input id="shareInput" type="number" placeholder="উদাহরণ: 250" /></div>
+  </div>
+
+  <button onclick="calculateLand()">হিসাব করো</button>
+  <button class="secondary" onclick="clearInputs()">ক্লিয়ার</button>
+
+  <div class="result" id="result"></div>
+
+  <p style="margin-top:10px;font-weight:600;">সূত্র:</p>
+  <p>(1000 ÷ দাগের মোট জমি) × অংশানুয়ায়ী জমির পরিমান</p>
+</div>
+
+<script>
+function calculateLand(){
+  const acre = parseFloat(document.getElementById('acreInput').value) || 0;
+  const shotok = parseFloat(document.getElementById('shotokInput').value) || 0;
+  const extra1 = parseFloat(document.getElementById('extra1').value) || 0;
+  const extra2 = parseFloat(document.getElementById('extra2').value) || 0;
+  const extra3 = parseFloat(document.getElementById('extra3').value) || 0;
+  const extra4 = parseFloat(document.getElementById('extra4').value) || 0;
+  const extra5 = parseFloat(document.getElementById('extra5').value) || 0;
+  const share = parseFloat(document.getElementById('shareInput').value);
+
+  if(isNaN(share)){
+    alert('অংশানুয়ায়ী জমির পরিমান লিখুন');
+    return;
+  }
+
+  const acreToShotok = acre * 100;
+  const totalShotok = acreToShotok + shotok + extra1 + extra2 + extra3 + extra4 + extra5;
+
+  const result = (1000 / totalShotok) * share;
+  document.getElementById('result').innerText = 'ফলাফল: ' + result.toFixed(2);
+}
+
+function clearInputs(){
+  ['acreInput','shotokInput','extra1','extra2','extra3','extra4','extra5','shareInput'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('result').innerText = '';
+}
+</script>
+</body>
+</html>
