@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>জমি ক্যালকুলেটর</title>
+<style>body{margin:0;font-family:'Noto Sans Bengali',Kalpurush,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;background:#e0e0e0;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:12px}.card{background:#fff;padding:12px 20px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.12);width:100%;max-width:500px}h1{margin:0 0 6px 0;font-size:18px}h2{margin:0 0 10px 0;text-align:center;font-size:16px}.row{display:flex;justify-content:space-between;align-items:center;margin:6px 0}.label{flex:1;text-align:left;padding-right:12px}.input{flex:1}input[type=number]{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #ccc;font-size:15px}button{background:#007bff;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:15px;margin-right:8px}button.secondary{background:#28a745}.result{margin-top:12px;font-weight:700;font-size:15px}.extra-input{margin-bottom:8px}.extra-sum{font-weight:600;margin-bottom:8px;text-align:right}.subresult{margin-top:6px;font-size:14px;color:#333}</style>
+</head>
+<body>
+<div class="card">
+<h1>Expreiment By Rashedul Alam</h1>
+<h2>জমি ক্যালকুলেটর</h2>
+<div class="extra-input"><input id="extra1" type="number" placeholder="একই দাগে অনেক জমি থাকলে (শতক)" oninput="updateExtraTotal()"/></div>
+<div class="extra-input"><input id="extra2" type="number" placeholder="একই দাগে অনেক জমি থাকলে (শতক)" oninput="updateExtraTotal()"/></div>
+<div class="extra-input"><input id="extra3" type="number" placeholder="একই দাগে অনেক জমি থাকলে (শতক)" oninput="updateExtraTotal()"/></div>
+<div class="extra-input"><input id="extra4" type="number" placeholder="একই দাগে অনেক জমি থাকলে (শতক)" oninput="updateExtraTotal()"/></div>
+<div class="extra-input"><input id="extra5" type="number" placeholder="একই দাগে অনেক জমি থাকলে (শতক)" oninput="updateExtraTotal()"/></div>
+<div id="extraTotal" class="extra-sum">অতিরিক্ত ইনপুটের যোগফল: 0</div>
+<hr style="margin:10px 0"/>
+<div class="row"><div class="label">দাগের মোট জমি</div><div class="input"><input id="acreInput" type="number" placeholder="একর"/></div><div class="input"><input id="shotokInput" type="number" placeholder="শতক"/></div></div>
+<div class="row"><div class="label">অংশানুয়ায়ী জমির পরিমান</div><div class="input"><input id="shareInput" type="number"/></div></div>
+<div style="margin-top:8px"><button onclick="calculateLand()">হিসাব করো</button><button class="secondary" onclick="clearInputs()">ক্লিয়ার</button></div>
+<div class="result" id="result"></div>
+<div class="subresult" id="resultAcre"></div>
+<p style="margin-top:8px;font-weight:600;">সূত্র: (1000 ÷ দাগের মোট জমি) × অংশানুয়ায়ী জমির পরিমান</p>
+</div>
+<script>
+function updateExtraTotal(){const extraInputs=['extra1','extra2','extra3','extra4','extra5'];let sum=0;extraInputs.forEach(id=>{sum+=parseFloat(document.getElementById(id).value)||0});document.getElementById('extraTotal').innerText='অতিরিক্ত ইনপুটের যোগফল: '+sum}
+function calculateLand(){const acre=parseFloat(document.getElementById('acreInput').value)||0;const shotok=parseFloat(document.getElementById('shotokInput').value)||0;const extras=['extra1','extra2','extra3','extra4','extra5'].reduce((acc,id)=>acc+(parseFloat(document.getElementById(id).value)||0),0);const share=parseFloat(document.getElementById('shareInput').value);if(isNaN(share)){alert('অংশানুয়ায়ী জমির পরিমান লিখুন');return}const acreToShotok=acre*100;const totalShotok=acreToShotok+shotok+extras;const result=(1000/totalShotok)*share;const resultRounded=Number(result.toFixed(3));document.getElementById('result').innerText='ফলাফল (শতক): '+resultRounded.toLocaleString();const resultInAcre=result/1000;document.getElementById('resultAcre').innerText='অংশে রূপান্তর: '+Number(resultInAcre.toFixed(3)).toLocaleString(undefined,{minimumFractionDigits:3,maximumFractionDigits:3})+' অংশ'}
+function clearInputs(){['acreInput','shotokInput','extra1','extra2','extra3','extra4','extra5','shareInput'].forEach(id=>document.getElementById(id).value='');document.getElementById('result').innerText='';document.getElementById('resultAcre').innerText='';document.getElementById('extraTotal').innerText='অতিরিক্ত ইনপুটের যোগফল: 0'}
+</script>
+</body>
+</html>
