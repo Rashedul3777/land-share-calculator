@@ -1,33 +1,291 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html>
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>জমি ক্যালকুলেটর</title>
-<style>body{margin:0;font-family:'Noto Sans Bengali',Kalpurush,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;background:#e0e0e0;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:12px}.card{background:#fff;padding:12px 20px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.12);width:100%;max-width:500px}h1{margin:0 0 6px 0;font-size:18px}h2{margin:0 0 10px 0;text-align:center;font-size:16px}.row{display:flex;justify-content:space-between;align-items:center;margin:6px 0}.label{flex:1;text-align:left;padding-right:12px}.input{flex:1}input[type=number]{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #ccc;font-size:15px}button{background:#007bff;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:15px;margin-right:8px}button.secondary{background:#28a745}.result{margin-top:12px;font-weight:700;font-size:15px}.extra-input{margin-bottom:8px}.extra-sum{font-weight:600;margin-bottom:8px;text-align:right}.subresult{margin-top:6px;font-size:14px;color:#333}</style>
+  <title>Land Share Calculator (অংশ)</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f2f4f7;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .layout {
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .sidebar {
+      width: 170px;
+      background: white;
+      padding: 12px;
+      border-radius: 12px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .sidebar h4 {
+      margin: 6px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .sidebar div {
+      padding: 2px 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      max-width: 1300px;
+    }
+
+    .card {
+      background: white;
+      padding: 12px;
+      border-radius: 12px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 5px;
+      right: 8px;
+      color: red;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin: 4px 0;
+    }
+
+    .row input {
+      width: 60px;
+    }
+
+    .result {
+      margin-top: 4px;
+      color: green;
+      font-size: 13px;
+    }
+
+    button {
+      margin: 6px;
+      padding: 6px 12px;
+    }
+  </style>
 </head>
+
 <body>
-<div class="card">
-<h1>Expreiment By Rashedul Alam</h1>
-<h2>জমি ক্যালকুলেটর</h2>
-<div class="extra-input"><input id="extra1" type="number" placeholder="একই দাগে অনেক জমি থাকলে (শতক)" oninput="updateExtraTotal()"/></div>
-<div class="extra-input"><input id="extra2" type="number" placeholder="একই দাগে অনেক জমি থাকলে (শতক)" oninput="updateExtraTotal()"/></div>
-<div class="extra-input"><input id="extra3" type="number" placeholder="একই দাগে অনেক জমি থাকলে (শতক)" oninput="updateExtraTotal()"/></div>
-<div class="extra-input"><input id="extra4" type="number" placeholder="একই দাগে অনেক জমি থাকলে (শতক)" oninput="updateExtraTotal()"/></div>
-<div class="extra-input"><input id="extra5" type="number" placeholder="একই দাগে অনেক জমি থাকলে (শতক)" oninput="updateExtraTotal()"/></div>
-<div id="extraTotal" class="extra-sum">অতিরিক্ত ইনপুটের যোগফল: 0</div>
-<hr style="margin:10px 0"/>
-<div class="row"><div class="label">দাগের মোট জমি</div><div class="input"><input id="acreInput" type="number" placeholder="একর"/></div><div class="input"><input id="shotokInput" type="number" placeholder="শতক"/></div></div>
-<div class="row"><div class="label">অংশানুয়ায়ী জমির পরিমান</div><div class="input"><input id="shareInput" type="number"/></div></div>
-<div style="margin-top:8px"><button onclick="calculateLand()">হিসাব করো</button><button class="secondary" onclick="clearInputs()">ক্লিয়ার</button></div>
-<div class="result" id="result"></div>
-<div class="subresult" id="resultAcre"></div>
-<p style="margin-top:8px;font-weight:600;">সূত্র: (1000 ÷ দাগের মোট জমি) × অংশানুয়ায়ী জমির পরিমান</p>
+
+<h2>Land Share Calculator</h2>
+<p>✦ Expriment by RD ✦</p>
+
+<div class="layout">
+
+  <div class="sidebar">
+    <h4>আনা</h4>
+    <div>⁄ = ১</div><div>৵ = ২</div><div>৶ = ৩</div><div>৷ = ৪</div>
+    <div>৷⁄ = ৫</div><div>৷৵ = ৬</div><div>৷৶ = ৭</div><div>৷৷ = ৮</div>
+    <div>৷৷⁄ = ৯</div><div>৷৷৵ = ১০</div><div>৷৷৶ = ১১</div>
+    <div>৸ = ১২</div><div>৸⁄ = ১৩</div><div>৸৵ = ১৪</div><div>৸৶ = ১৫</div>
+    <div>১্ = ১৬</div>
+
+    <h4>কড়া</h4>
+    <div>৷ = ১</div><div>৷৷ = ২</div><div>৸ = ৩</div>
+
+    <h4>ক্রান্তি</h4>
+    <div>৴ = ১</div><div>৴৴ = ২</div>
+  </div>
+
+  <div>
+
+    <div id="container" class="grid"></div>
+
+    <button onclick="addRow()">+ Add More Owner</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="clearAll()">Clear</button>
+
+    <h3 id="total"></h3>
+
+  </div>
+
 </div>
+
 <script>
-function updateExtraTotal(){const extraInputs=['extra1','extra2','extra3','extra4','extra5'];let sum=0;extraInputs.forEach(id=>{sum+=parseFloat(document.getElementById(id).value)||0});document.getElementById('extraTotal').innerText='অতিরিক্ত ইনপুটের যোগফল: '+sum}
-function calculateLand(){const acre=parseFloat(document.getElementById('acreInput').value)||0;const shotok=parseFloat(document.getElementById('shotokInput').value)||0;const extras=['extra1','extra2','extra3','extra4','extra5'].reduce((acc,id)=>acc+(parseFloat(document.getElementById(id).value)||0),0);const share=parseFloat(document.getElementById('shareInput').value);if(isNaN(share)){alert('অংশানুয়ায়ী জমির পরিমান লিখুন');return}const acreToShotok=acre*100;const totalShotok=acreToShotok+shotok+extras;const result=(1000/totalShotok)*share;const resultRounded=Number(result.toFixed(3));document.getElementById('result').innerText='ফলাফল (শতক): '+resultRounded.toLocaleString();const resultInAcre=result/1000;document.getElementById('resultAcre').innerText='অংশে রূপান্তর: '+Number(resultInAcre.toFixed(3)).toLocaleString(undefined,{minimumFractionDigits:3,maximumFractionDigits:3})+' অংশ'}
-function clearInputs(){['acreInput','shotokInput','extra1','extra2','extra3','extra4','extra5','shareInput'].forEach(id=>document.getElementById(id).value='');document.getElementById('result').innerText='';document.getElementById('resultAcre').innerText='';document.getElementById('extraTotal').innerText='অতিরিক্ত ইনপুটের যোগফল: 0'}
+
+// 🔥 বাংলা → ইংরেজি
+function bnToEn(val){
+  return val.replace(/[০-৯]/g, d => "০১২৩৪৫৬৭৮৯".indexOf(d));
+}
+
+// 🔥 limit + convert
+function fixInput(el, max){
+  let v = bnToEn(el.value);
+  v = v.replace(/[^0-9]/g,'');
+
+  if(v === ''){
+    el.value = '';
+    return;
+  }
+
+  v = parseInt(v);
+
+  if(v > max) v = max;
+  if(v < 0) v = 0;
+
+  el.value = v;
+}
+
+function createCard(){
+  return `
+  <div class="card">
+    <div class="delete-btn" onclick="deleteCard(this)">✖</div>
+
+    <b>মালিক</b><br><br>
+
+    <div class="row">আনা <input type="text" class="ana" oninput="fixInput(this,9999)"></div>
+
+    <div class="row">গন্ডা <input type="text" class="gonda" oninput="fixInput(this,19)"></div>
+
+    <div class="row">কড়া <input type="text" class="kora" oninput="fixInput(this,3)"></div>
+
+    <div class="row">ক্রান্তি <input type="text" class="kranti" oninput="fixInput(this,2)"></div>
+
+    <div class="row">তিল <input type="text" class="til" oninput="fixInput(this,19)"></div>
+
+    <button onclick="copyCard(this)">Copy</button>
+
+    <div class="result">অংশ: 0</div>
+    <div class="result">অংশ: 0</div>
+  </div>`;
+}
+
+function addCard(){
+  let div = document.createElement("div");
+  div.innerHTML = createCard();
+  container.appendChild(div.firstElementChild);
+}
+
+function load(){
+  for(let i=0;i<6;i++) addCard();
+  renumberOwners();
+}
+
+function addRow(){
+  for(let i=0;i<6;i++) addCard();
+  renumberOwners();
+}
+
+function copyCard(btn){
+  let card = btn.closest(".card");
+
+  let newCard = document.createElement("div");
+  newCard.innerHTML = createCard();
+  let c = newCard.firstElementChild;
+
+  ["ana","gonda","kora","kranti","til"].forEach(cls=>{
+    c.querySelector("."+cls).value =
+      card.querySelector("."+cls).value;
+  });
+
+  card.after(c);
+  renumberOwners();
+  calculate();
+}
+
+function deleteCard(btn){
+  btn.closest(".card").remove();
+  renumberOwners();
+  calculate();
+}
+
+function renumberOwners(){
+  document.querySelectorAll(".card").forEach((card,index)=>{
+    card.querySelector("b").innerText = "মালিক " + (index + 1);
+  });
+}
+
+document.addEventListener("input", calculate);
+
+// 🔥 calculate untouched
+function calculate(){
+  let cards = document.querySelectorAll(".card");
+  let total = 0;
+  let values = [];
+
+  cards.forEach(card=>{
+    let ana = +card.querySelector(".ana").value || 0;
+    let gonda = +card.querySelector(".gonda").value || 0;
+    let kora = +card.querySelector(".kora").value || 0;
+    let kranti = +card.querySelector(".kranti").value || 0;
+    let til = +card.querySelector(".til").value || 0;
+
+    let value =
+      (ana * 62.5) +
+      (gonda * 3.125) +
+      (kora * 0.78125) +
+      (kranti * 0.2604167) +
+      (til * 0.0130208);
+
+    values.push(value);
+    total += value;
+  });
+
+  if(total === 0) return;
+
+  let normalized = values.map(v => v / total);
+
+  let rounded = normalized.map(v => Math.floor(v * 1000) / 1000);
+
+  let sumRounded = rounded.reduce((a,b)=>a+b,0);
+
+  let remaining = Math.round((1 - sumRounded) * 1000);
+
+  let indexes = values
+    .map((v,i)=>({v,i}))
+    .sort((a,b)=>b.v - a.v)
+    .map(obj=>obj.i);
+
+  let i = 0;
+  while(remaining > 0){
+    let idx = indexes[i % indexes.length];
+    rounded[idx] = Number((rounded[idx] + 0.001).toFixed(3));
+    remaining--;
+    i++;
+  }
+
+  cards.forEach((card,i)=>{
+    let r = card.querySelectorAll(".result");
+    r[0].innerHTML = "অংশ: " + values[i].toFixed(5);
+    r[1].innerHTML = "অংশ: " + rounded[i].toFixed(3);
+  });
+
+  let totalNormalized = rounded.reduce((a,b)=>a+b,0);
+
+  document.getElementById("total").innerHTML =
+    "মোট: "+total.toFixed(5)+"<br>" +
+    "নিচের যোগফল: " + totalNormalized.toFixed(3) +
+    "<br>" +
+    (Math.abs(total-1000)<0.001 ? "✅ ১০০০ ঠিক আছে" : "❌ ১০০০ হয়নি");
+}
+
+function clearAll(){
+  document.querySelectorAll("input").forEach(i=>i.value="");
+  document.querySelectorAll(".result").forEach(r=>r.innerHTML="অংশ: 0");
+  total.innerHTML="";
+}
+
+load();
+
 </script>
+
 </body>
 </html>
